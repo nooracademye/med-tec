@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Schedule - QuickMed</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>QuickMed Services</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="book-service.html">Book a Service</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Schedule Section -->
+    <div class="section">
+        <h2>Your Reservations</h2>
+        <div id="scheduleContainer">
+            <!-- Reservations will be dynamically added here -->
+            <p>Loading your reservations...</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 QuickMed Services. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const scheduleContainer = document.getElementById("scheduleContainer");
+
+            // Fetch bookings from localStorage
+            const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+            if (bookings.length === 0) {
+                scheduleContainer.innerHTML = "<p>No reservations found. Book your service today!</p>";
+            } else {
+                // Clear the "Loading" message
+                scheduleContainer.innerHTML = "";
+
+                // Sort bookings by date and time in descending order (newest first)
+                bookings.sort((a, b) => {
+                    const dateA = new Date(`${a.date}T${a.time}`);
+                    const dateB = new Date(`${b.date}T${b.time}`);
+                    return dateB - dateA; // Sort descending (newest first)
+                });
+
+                // Create a dynamic list of bookings
+                bookings.forEach((booking, index) => {
+                    const bookingElement = document.createElement("div");
+                    bookingElement.classList.add("reservation");
+                    bookingElement.innerHTML = `
+                        <h3>${booking.service}</h3>
+                        <p><strong>Name:</strong> ${booking.name}</p>
+                        <p><strong>Email:</strong> ${booking.email}</p>
+                        <p><strong>Date:</strong> ${booking.date}</p>
+                        <p><strong>Time:</strong> ${booking.time}</p>
+                        <button onclick="removeBooking(${index})">Cancel Reservation</button>
+                    `;
+                    scheduleContainer.appendChild(bookingElement);
+                });
+            }
+        });
+
+        // Function to remove a booking
+        function removeBooking(index) {
+            // Get the current bookings from localStorage
+            const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+            // Remove the booking at the specified index
+            bookings.splice(index, 1);
+
+            // Save the updated bookings back to localStorage
+            localStorage.setItem("bookings", JSON.stringify(bookings));
+
+            // Refresh the page to reflect the changes
+            window.location.reload();
+        }
+    </script>
+</body>
+
+</html>

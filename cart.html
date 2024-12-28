@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - QuickMed</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>QuickMed Services</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="cart.html" class="active">Cart</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Cart Section -->
+    <div class="section">
+        <h2>Your Cart</h2>
+        <div id="cartContainer">
+            <!-- Cart items will be displayed here -->
+        </div>
+        <div id="cartSummary">
+            <p><strong>Total Price:</strong> $<span id="totalPrice">0.00</span></p>
+            <button id="clearCart" class="clear-cart">Clear Cart</button>
+            <button id="checkout" class="checkout">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 QuickMed Services. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to update the cart view and total price
+        function updateCart() {
+            const cartContainer = document.getElementById("cartContainer");
+            const totalPriceElement = document.getElementById("totalPrice");
+            const clearCartButton = document.getElementById("clearCart");
+            const checkoutButton = document.getElementById("checkout");
+
+            // Get the cart from localStorage or initialize an empty cart
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // If the cart is empty, show a message
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<p>Your cart is empty. Add some products to your cart!</p>";
+                totalPriceElement.textContent = "0.00";
+                checkoutButton.style.display = "none";
+                clearCartButton.style.display = "none";
+                return;
+            }
+
+            // Generate HTML for each item in the cart
+            let cartHTML = cart.map((item, index) => {
+                return `
+                    <div class="cart-item">
+                        <p><strong>${item.name}</strong></p>
+                        <p>Price: $${item.price}</p>
+                        <button class="remove-item" data-index="${index}">Remove</button>
+                    </div>
+                `;
+            }).join("");
+
+            // Display the cart items
+            cartContainer.innerHTML = cartHTML;
+
+            // Calculate total price
+            const totalPrice = cart.reduce((total, item) => total + parseFloat(item.price), 0);
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+
+            // Show the checkout and clear cart buttons
+            checkoutButton.style.display = "inline-block";
+            clearCartButton.style.display = "inline-block";
+
+            // Add event listeners to remove buttons
+            const removeButtons = document.querySelectorAll(".remove-item");
+            removeButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const index = button.getAttribute("data-index");
+                    cart.splice(index, 1);  // Remove the item from the cart
+
+                    // Update the cart in localStorage
+                    localStorage.setItem("cart", JSON.stringify(cart));
+
+                    // Re-render the cart after removal
+                    updateCart();
+                });
+            });
+        }
+
+        // Function to clear the cart
+        function clearCart() {
+            localStorage.removeItem("cart");
+            updateCart();
+        }
+
+        // Event listener for checkout button
+        function handleCheckout() {
+            alert("Proceeding to checkout...");
+            // Here you could redirect the user to a checkout page or trigger the checkout flow
+        }
+
+        // On document load, initialize the cart
+        document.addEventListener("DOMContentLoaded", () => {
+            updateCart();  // Update the cart when the page loads
+
+            // Add event listeners to buttons
+            document.getElementById("clearCart").addEventListener("click", clearCart);
+            document.getElementById("checkout").addEventListener("click", handleCheckout);
+        });
+    </script>
+</body>
+
+</html>

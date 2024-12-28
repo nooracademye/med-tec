@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - QuickMed</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>QuickMed Services</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="contact.html" class="active">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contact Section -->
+    <div class="section">
+        <h2>Contact Us</h2>
+        <p><strong>Email:</strong> <a href="mailto:contact@quickmed.com">contact@quickmed.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:+18005551234">+1-800-555-1234</a></p>
+        <p><strong>Address:</strong> 1234 Health Blvd, Wellness City, QC 56789</p>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="section">
+        <h3>Get in Touch</h3>
+        <form id="contactForm">
+            <div>
+                <label for="name">Your Name:</label><br>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="email">Your Email:</label><br>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="message">Your Message:</label><br>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <div>
+                <button type="submit">Send Message</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 QuickMed Services. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for getting in touch! We will respond to you shortly.');
+            this.reset();
+        });
+    </script>
+</body>
+
+</html>

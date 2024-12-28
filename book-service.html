@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Service - QuickMed</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>QuickMed Services</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="book-service.html" class="active">Book a Service</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Booking Section -->
+    <div class="section">
+        <h2>Book a Service</h2>
+        <p>Choose your preferred service, date, and time slot between 10 AM and 10 PM.</p>
+
+        <form id="bookingForm">
+            <!-- Full Name -->
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            <!-- Email -->
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <!-- Choose a Service -->
+            <label for="service">Choose a Service:</label>
+            <select id="service" name="service" required>
+                <option value="" disabled selected>Select a service</option>
+                <option value="therapy">Therapy Sessions</option>
+                <option value="oxygen">Oxygen Sessions</option>
+                <option value="drip">Drip Sessions</option>
+                <option value="dermatology">Dermatology Sessions</option>
+                <option value="tests">Medical Tests</option>
+            </select>
+
+            <!-- Choose a Date -->
+            <label for="date">Choose a Date:</label>
+            <input type="date" id="date" name="date" min="" required>
+
+            <!-- Choose a Time -->
+            <label for="time">Choose a Time Slot:</label>
+            <select id="time" name="time" required>
+                <option value="" disabled selected>Select a time</option>
+                <script>
+                    // Generate time slots between 10 AM and 10 PM
+                    for (let hour = 10; hour <= 22; hour++) {
+                        const formattedHour = hour < 10 ? `0${hour}` : hour;
+                        const timeSlot = `${formattedHour}:00`;
+                        document.write(`<option value="${timeSlot}">${timeSlot}</option>`);
+                    }
+                </script>
+            </select>
+
+            <!-- Submit Button -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 QuickMed Services. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Set today's date as the minimum for the date input
+            const today = new Date().toISOString().split("T")[0];
+            document.getElementById("date").setAttribute("min", today);
+
+            // Handle form submission
+            const bookingForm = document.getElementById("bookingForm");
+            bookingForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const service = document.getElementById("service").value;
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+
+                alert(`Thank you, ${name}! Your booking for ${service} on ${date} at ${time} has been confirmed.`);
+
+                // Save booking to localStorage
+                const bookingData = { name, email, service, date, time };
+
+                // Retrieve existing bookings from localStorage or initialize an empty array
+                let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+                bookings.push(bookingData);
+
+                // Save updated bookings list back to localStorage
+                localStorage.setItem("bookings", JSON.stringify(bookings));
+
+                // Optionally redirect or reset the form
+                bookingForm.reset();
+            });
+        });
+    </script>
+</body>
+
+</html>
